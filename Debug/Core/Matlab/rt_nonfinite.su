@@ -1,0 +1,5 @@
+../Core/Matlab/rt_nonfinite.c:34:6:rt_InitInfAndNaN	16	static
+../Core/Matlab/rt_nonfinite.c:46:11:rtIsInf	16	static
+../Core/Matlab/rt_nonfinite.c:52:11:rtIsInfF	16	static
+../Core/Matlab/rt_nonfinite.c:58:11:rtIsNaN	32	static
+../Core/Matlab/rt_nonfinite.c:80:11:rtIsNaNF	24	static

@@ -1,0 +1,2 @@
+../Core/Matlab/rtGetNaN.c:26:8:rtGetNaN	32	static
+../Core/Matlab/rtGetNaN.c:50:10:rtGetNaNF	16	static

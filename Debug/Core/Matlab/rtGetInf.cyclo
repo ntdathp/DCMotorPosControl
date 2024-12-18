@@ -1,0 +1,4 @@
+../Core/Matlab/rtGetInf.c:26:8:rtGetInf	2
+../Core/Matlab/rtGetInf.c:50:10:rtGetInfF	1
+../Core/Matlab/rtGetInf.c:61:8:rtGetMinusInf	2
+../Core/Matlab/rtGetInf.c:85:10:rtGetMinusInfF	1

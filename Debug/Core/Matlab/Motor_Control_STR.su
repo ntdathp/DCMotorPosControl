@@ -1,0 +1,3 @@
+../Core/Matlab/Motor_Control_STR.c:47:6:Motor_Control_STR_step	528	static
+../Core/Matlab/Motor_Control_STR.c:379:6:Motor_Control_STR_initialize	8	static
+../Core/Matlab/Motor_Control_STR.c:429:6:Motor_Control_STR_terminate	4	static

@@ -1,0 +1,17 @@
+../Core/Src/main.c:89:6:rt_OneStep	8	static
+../Core/Src/main.c:120:6:float_to_string	40	static
+../Core/Src/main.c:151:6:process_buffers	32	static
+../Core/Src/main.c:176:6:StrCompare	32	static
+../Core/Src/main.c:188:6:process_uart_string	24	static
+../Core/Src/main.c:235:6:motor_set_duty	16	static
+../Core/Src/main.c:251:6:motor_read_encoder	16	static
+../Core/Src/main.c:264:5:main	8	static
+../Core/Src/main.c:321:6:SystemClock_Config	88	static
+../Core/Src/main.c:368:13:MX_TIM1_Init	56	static
+../Core/Src/main.c:418:13:MX_TIM3_Init	48	static
+../Core/Src/main.c:467:13:MX_TIM4_Init	32	static
+../Core/Src/main.c:512:13:MX_UART4_Init	8	static
+../Core/Src/main.c:545:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:574:6:HAL_TIM_PeriodElapsedCallback	24	static
+../Core/Src/main.c:638:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/main.c:664:6:Error_Handler	4	static,ignoring_inline_asm

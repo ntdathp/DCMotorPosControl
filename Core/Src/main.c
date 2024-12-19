@@ -53,6 +53,7 @@ TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart4;
 
+/* USER CODE BEGIN PV */
 UART_Data t_data;
 
 uint8_t urx_index = 0;
@@ -67,8 +68,6 @@ int iu;
 char cposition[10];
 char csp[10];
 char txbuf[50];
-/* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -152,24 +151,20 @@ void process_buffers(float dposition, float sp, char *cposition, char *csp, char
     if (dposition != 0) {
         float_to_string(dposition, cposition);
     } else {
-        cposition[0] = '\0';
+        strcpy(cposition, "0");
     }
 
     if (sp != 0) {
         float_to_string(sp, csp);
     } else {
-        csp[0] = '\0';
+        strcpy(csp, "0");
     }
 
     result[0] = '\0';
     strcat(result, "Y, ");
-    if (cposition[0] != '\0') {
-        strcat(result, cposition);
-        strcat(result, ", ");
-    }
-    if (csp[0] != '\0') {
-        strcat(result, csp);
-    }
+    strcat(result, cposition);
+    strcat(result, ", ");
+    strcat(result, csp);
     strcat(result, "\r\n");
 }
 
@@ -190,24 +185,24 @@ void process_uart_string(char *uart_string, UART_Data *data) {
 
     memset(data, 0, sizeof(UART_Data));
 
-    token = strtok(uart_string, ",");
+    token = strtok(uart_string, " ");
     if (token) {
         strncpy(data->type, token, 3);
         data->type[3] = '\0';
     }
 
-    token = strtok(NULL, ",");
+    token = strtok(NULL, " ");
     if (token) data->sp = atof(token);
 
     if (StrCompare(data->type, (uint8_t *)"PID", 3)) {
         Case = 1.0;
-        token = strtok(NULL, ",");
+        token = strtok(NULL, " ");
         if (token) data->value1 = atof(token);
 
-        token = strtok(NULL, ",");
+        token = strtok(NULL, " ");
         if (token) data->value2 = atof(token);
 
-        token = strtok(NULL, ",");
+        token = strtok(NULL, " ");
         if (token) data->value3 = atof(token);
     }
     else if (StrCompare(data->type, (uint8_t *)"STR", 3)) {
@@ -215,20 +210,26 @@ void process_uart_string(char *uart_string, UART_Data *data) {
     }
     else if (StrCompare(data->type, (uint8_t *)"LQR", 3)) {
         Case = 3.0;
-        token = strtok(NULL, ",");
+        token = strtok(NULL, " ");
         if (token) data->value1 = atof(token);
 
-        token = strtok(NULL, ",");
+        token = strtok(NULL, " ");
         if (token) data->value2 = atof(token);
     }
     else if (StrCompare(data->type, (uint8_t *)"C", 1)) {
-    	int count = 0;
-    	process_buffers(0.0, 0.0, cposition, csp, txbuf);
-    	while (txbuf[count] != '\0' && txbuf[count] != '\n') {
-    		count++;
-    	}
-    	HAL_UART_Transmit(&UART_COM, (uint8_t*)txbuf, (count+1), HAL_MAX_DELAY);
+        int count = 0;
+        process_buffers(0.0, 0.0, cposition, csp, txbuf);
+        while (txbuf[count] != '\0' && txbuf[count] != '\n') {
+            count++;
+        }
+        HAL_UART_Transmit(&UART_COM, (uint8_t*)txbuf, (count + 1), HAL_MAX_DELAY);
     }
+    else if (StrCompare(data->type, (uint8_t *)"STOP", 4)) {
+           Case = 0;
+           dposition = 0;
+           icounter = 0;
+           MOTOR_CONTROL_REGISTER = 0;
+       }
 }
 
 
@@ -248,11 +249,12 @@ void motor_set_duty(int32_t iduty)
     }
 }
 
-void motor_read_encoder(float dpos, TIM_HandleTypeDef *htim)
+void motor_read_encoder(float *dpos, TIM_HandleTypeDef *htim)
 {
-	icounter = htim->Instance->CNT;
-	dpos += (float)icounter / (float)PPR * NUMBER_OF_DEGREES_ON_A_CIRCLE;
-	htim->Instance->CNT = 0;
+
+    icounter = (int16_t)htim->Instance->CNT;
+    *dpos += ((float)icounter / (float)PPR) * NUMBER_OF_DEGREES_ON_A_CIRCLE;
+    htim->Instance->CNT = 0;
 }
 
 /* USER CODE END 0 */
@@ -295,7 +297,7 @@ int main(void)
   HAL_TIM_Encoder_Start(&ECODER_TIMER, TIM_CHANNEL_1);
   HAL_TIM_Encoder_Start(&ECODER_TIMER, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&PWM_TIMER, TIM_CHANNEL_1);
-
+  HAL_UART_Receive_IT(&UART_COM, &urx, 1);
   Motor_Control_STR_initialize();
 
   xi = 0.99;
@@ -336,8 +338,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 16;
-  RCC_OscInitStruct.PLL.PLLN = 192;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 84;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -351,10 +353,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = 2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -429,9 +431,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 111;
+  htim3.Init.Prescaler = 54;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 65535;
+  htim3.Init.Period = 100;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
@@ -480,7 +482,7 @@ static void MX_TIM4_Init(void)
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 8399;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 99;
+  htim4.Init.Period = 49;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
@@ -576,8 +578,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == INTERUPT_TIMER_INSTANCE)
   {
 	  int count = 0;
+	  motor_set_duty(50);
+
 	 // Read encoder
-	  motor_read_encoder(dposition, &ECODER_TIMER);
+	  motor_read_encoder(&dposition, &ECODER_TIMER);
 	 // switch case
 	  switch ((int)Case) {
 	          case 1:
@@ -626,8 +630,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	        	  HAL_UART_Transmit(&UART_COM, (uint8_t*)txbuf, (count+1), HAL_MAX_DELAY);
 	              break;
 	          default:
-	        	  dposition = 0;
-	        	  Motor_Control_STR_terminate();
 	              break;
 	      }
 
@@ -649,6 +651,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			urx_buff[urx_index] = urx;
 			urx_index++;
 			process_uart_string((char *)urx_buff, &t_data);
+			urx_index = 0;
 		}
 	}
 	HAL_UART_Receive_IT(&UART_COM, &urx, 1);

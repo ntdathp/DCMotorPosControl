@@ -224,7 +224,7 @@ void process_uart_string(char *uart_string, UART_Data *data) {
         }
         HAL_UART_Transmit(&UART_COM, (uint8_t*)txbuf, (count + 1), HAL_MAX_DELAY);
     }
-    else if (StrCompare(data->type, (uint8_t *)"STOP", 4)) {
+    else if (StrCompare(data->type, (uint8_t *)"STO", 3)) {
            Case = 0;
            dposition = 0;
            icounter = 0;
@@ -300,7 +300,7 @@ int main(void)
   HAL_UART_Receive_IT(&UART_COM, &urx, 1);
   Motor_Control_STR_initialize();
 
-  xi = 0.99;
+  lamda = 0.999;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -578,7 +578,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == INTERUPT_TIMER_INSTANCE)
   {
 	  int count = 0;
-	  motor_set_duty(50);
+
 
 	 // Read encoder
 	  motor_read_encoder(&dposition, &ECODER_TIMER);

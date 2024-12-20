@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'Motor_Control_STR'.
  *
- * Model version                  : 12.10
+ * Model version                  : 12.14
  * Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
- * C/C++ source code generated on : Tue Dec 17 22:47:01 2024
+ * C/C++ source code generated on : Fri Dec 20 16:22:54 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Intel->x86-64 (Windows64)
@@ -93,7 +93,7 @@ extern real_T Ki;                      /* '<Root>/Ki' */
 extern real_T Kd;                      /* '<Root>/Kd' */
 extern real_T K1;                      /* '<Root>/K1' */
 extern real_T K2;                      /* '<Root>/K2' */
-extern real_T xi;                      /* '<Root>/xi' */
+extern real_T lamda;                   /* '<Root>/lamda' */
 extern real_T pwm3;                    /* '<S3>/Saturation' */
 extern real_T pwm2;                    /* '<S1>/Saturation' */
 extern real_T pwm1;                    /* '<S2>/Saturation' */

@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'Motor_Control_STR'.
  *
- * Model version                  : 12.14
+ * Model version                  : 12.21
  * Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
- * C/C++ source code generated on : Fri Dec 20 16:22:54 2024
+ * C/C++ source code generated on : Sat Dec 21 08:10:23 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Intel->x86-64 (Windows64)
@@ -59,8 +59,8 @@ void Motor_Control_STR_step(void)
   real_T rtb_NProdOut;
   real_T rtb_Sum;
   real_T rtb_Sum_o;
-  real_T rtb_UnitDelay3_b;
-  real_T rtb_UnitDelay_j;
+  real_T rtb_UnitDelay3_d;
+  real_T rtb_UnitDelay_n;
   int32_T PHI_tmp;
   int32_T i;
   int32_T tmp_0;
@@ -203,10 +203,10 @@ void Motor_Control_STR_step(void)
     rtb_Sum = Setpoint - Sensor;
 
     /* UnitDelay: '<S6>/Unit Delay' */
-    rtb_UnitDelay_j = Motor_Control_STR_DW.UnitDelay_DSTATE_c;
+    rtb_UnitDelay_n = Motor_Control_STR_DW.UnitDelay_DSTATE_f;
 
     /* UnitDelay: '<S6>/Unit Delay3' */
-    rtb_UnitDelay3_b = Motor_Control_STR_DW.UnitDelay3_DSTATE_i;
+    rtb_UnitDelay3_d = Motor_Control_STR_DW.UnitDelay3_DSTATE_d;
 
     /* MATLAB Function: '<S6>/MATLAB Function' incorporates:
      *  SignalConversion generated from: '<S8>/ SFunction '
@@ -230,12 +230,12 @@ void Motor_Control_STR_step(void)
     q2 = ((((Motor_Control_STR_B.Theta[1] / Motor_Control_STR_B.Theta[3] -
              ((Motor_Control_STR_B.Theta[2] / Motor_Control_STR_B.Theta[3] -
                Motor_Control_STR_B.Theta[0] / Motor_Control_STR_B.Theta[1]) +
-              1.0) * q2) * Motor_Control_STR_DW.UnitDelay_DSTATE_c +
+              1.0) * q2) * Motor_Control_STR_DW.UnitDelay_DSTATE_f +
             ((-0.960781661356499 - Motor_Control_STR_B.Theta[0]) - b_gamma) /
             Motor_Control_STR_B.Theta[2] * rtb_Sum) + q2 *
-           Motor_Control_STR_DW.UnitDelay2_DSTATE_a) + (1.0 - b_gamma) *
-          Motor_Control_STR_DW.UnitDelay3_DSTATE_i) + b_gamma *
-      Motor_Control_STR_DW.UnitDelay1_DSTATE_j;
+           Motor_Control_STR_DW.UnitDelay2_DSTATE_m) + (1.0 - b_gamma) *
+          Motor_Control_STR_DW.UnitDelay3_DSTATE_d) + b_gamma *
+      Motor_Control_STR_DW.UnitDelay1_DSTATE_n;
 
     /* Saturate: '<S1>/Saturation' */
     if (q2 > 100.0) {
@@ -313,16 +313,16 @@ void Motor_Control_STR_step(void)
     Motor_Control_STR_DW.UnitDelay_DSTATE_j[3] = Motor_Control_STR_B.Theta[3];
 
     /* Update for UnitDelay: '<S6>/Unit Delay' */
-    Motor_Control_STR_DW.UnitDelay_DSTATE_c = rtb_Sum;
+    Motor_Control_STR_DW.UnitDelay_DSTATE_f = rtb_Sum;
 
     /* Update for UnitDelay: '<S6>/Unit Delay2' */
-    Motor_Control_STR_DW.UnitDelay2_DSTATE_a = rtb_UnitDelay_j;
+    Motor_Control_STR_DW.UnitDelay2_DSTATE_m = rtb_UnitDelay_n;
 
     /* Update for UnitDelay: '<S6>/Unit Delay3' */
-    Motor_Control_STR_DW.UnitDelay3_DSTATE_i = q2;
+    Motor_Control_STR_DW.UnitDelay3_DSTATE_d = q2;
 
     /* Update for UnitDelay: '<S6>/Unit Delay1' */
-    Motor_Control_STR_DW.UnitDelay1_DSTATE_j = rtb_UnitDelay3_b;
+    Motor_Control_STR_DW.UnitDelay1_DSTATE_n = rtb_UnitDelay3_d;
 
     /* End of Outputs for SubSystem: '<Root>/Switch Case Action Subsystem' */
     break;

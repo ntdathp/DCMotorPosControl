@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'Motor_Control_STR'.
  *
- * Model version                  : 12.14
+ * Model version                  : 12.21
  * Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
- * C/C++ source code generated on : Fri Dec 20 16:22:54 2024
+ * C/C++ source code generated on : Sat Dec 21 08:10:23 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Intel->x86-64 (Windows64)
@@ -47,10 +47,10 @@ typedef struct {
   real_T UnitDelay5_DSTATE;            /* '<S5>/Unit Delay5' */
   real_T UnitDelay1_DSTATE[16];        /* '<S5>/Unit Delay1' */
   real_T UnitDelay_DSTATE_j[4];        /* '<S5>/Unit Delay' */
-  real_T UnitDelay_DSTATE_c;           /* '<S6>/Unit Delay' */
-  real_T UnitDelay2_DSTATE_a;          /* '<S6>/Unit Delay2' */
-  real_T UnitDelay3_DSTATE_i;          /* '<S6>/Unit Delay3' */
-  real_T UnitDelay1_DSTATE_j;          /* '<S6>/Unit Delay1' */
+  real_T UnitDelay_DSTATE_f;           /* '<S6>/Unit Delay' */
+  real_T UnitDelay2_DSTATE_m;          /* '<S6>/Unit Delay2' */
+  real_T UnitDelay3_DSTATE_d;          /* '<S6>/Unit Delay3' */
+  real_T UnitDelay1_DSTATE_n;          /* '<S6>/Unit Delay1' */
   real_T Filter_DSTATE;                /* '<S36>/Filter' */
   real_T Integrator_DSTATE;            /* '<S41>/Integrator' */
 } DW_Motor_Control_STR_T;

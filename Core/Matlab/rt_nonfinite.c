@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'Motor_Control_STR'.
  *
- * Model version                  : 12.14
+ * Model version                  : 12.21
  * Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
- * C/C++ source code generated on : Fri Dec 20 16:22:54 2024
+ * C/C++ source code generated on : Sat Dec 21 08:10:23 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Intel->x86-64 (Windows64)
